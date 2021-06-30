@@ -4,14 +4,16 @@
 schema:
   schema_id: wugniu_zaonhe
   name: 吳語（上海）
-  version: "0.30"
+  version: "0.35"
   author:
     - 吳飛得 <fededemarco@gmail.com> (dict)
     - 神死慟瞑 <411325365@qq.com> (dict)
+    - 沪语角 <930702500@qq.com> (dict)
     - 雪心居士 <sihsin@live.com> (schema)
     - Electric Sheep <shinzoqchiuq@outlook.com> (dict, schema)
   description: |
-    上海吳語注音輸入方案吳語學堂版
+    採用學堂式吳語拼音
+    上海中派（分尖團）
     https://www.wugniu.com/
     https://github.com/NGLI/rime-wugniu_zaonhe/
   dependencies:
@@ -50,9 +52,10 @@ engine:
     - fallback_segmentor
   translators:
     - punct_translator
-    - script_translator             # 主翻譯器
-    - script_translator@luna_pinyin # 用於反查的luna_pinyin翻譯器
-    - table_translator@stroke       # 用於反查的stroke翻譯器
+    - script_translator              # 主翻譯器
+    - script_translator@luna_pinyin  # 用於反查的luna_pinyin翻譯器
+    - table_translator@stroke        # 用於反查的stroke翻譯器
+    - table_translator@custom_phrase # 用戶短語
   filters:
     - simplifier
     - uniquifier
@@ -70,9 +73,9 @@ speller:
     - derive/([gk])ni(?=[aoue])/ny/
     - derive/er/r/
 
-    # iun ion 互讀
-    - derive/(i|y)un/$1on/
-    - derive/(i|y)on/$1un/
+    # 尖團不分
+    - derive/ts(h?)i/c$1i/
+    - derive/^(s|z)i/$1hi/
     # 干官不分
     - derive/uoe/oe/
     - derive/woe/ghoe/
@@ -110,10 +113,6 @@ speller:
     - derive/oe/eo/
     # 容錯 ao => oa
     - derive/ao/oa/
-    # 容錯 y- => ghi-
-    - derive/yi|y(?=[aeou])/ghi/
-    # 容錯 w- => ghu-
-    - derive/wu|w(?=[aeo])/ghu/
 
 # 主翻譯器 上海吳拼
 translator:
@@ -146,6 +145,15 @@ stroke:
   closing_tips: 〔吳語（上海）〕
   preedit_format:
     - xlit/hspnz/一丨丿丶乙/
+
+# 副翻譯器3 用戶短語
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase # 用戶詞典名
+  db_class: stabledb       # 詞典類型爲只讀格式
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 1
 
 # 反查濾鏡
 reverse_lookup:
